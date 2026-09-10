@@ -32,3 +32,5 @@ val AreaSosialColor = Color(0xFF1565C0)
 val AreaIntelektualColor = Color(0xFFEF6C00)
 val AreaFisikColor = Color(0xFF00695C)
 
+val ScoutGreenDone = Color(0xFF2E7D32)
+

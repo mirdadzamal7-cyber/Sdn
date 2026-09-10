@@ -23,8 +23,10 @@ import androidx.compose.material.icons.automirrored.filled.FormatListBulleted
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.automirrored.outlined.FormatListBulleted
 import androidx.compose.material.icons.automirrored.outlined.MenuBook
+import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.SearchOff
+import androidx.compose.material.icons.outlined.Groups
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -117,11 +119,29 @@ fun MainScoutScreen(
                     onClick = { currentNavIndex = 1 },
                     icon = {
                         Icon(
-                            imageVector = if (currentNavIndex == 1) Icons.AutoMirrored.Filled.MenuBook else Icons.AutoMirrored.Outlined.MenuBook,
+                            imageVector = if (currentNavIndex == 1) Icons.Filled.Groups else Icons.Outlined.Groups,
+                            contentDescription = "Data Siswa"
+                        )
+                    },
+                    label = { Text("Data Siswa", fontSize = 11.sp) },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color.White,
+                        selectedTextColor = ScoutBrownPrimary,
+                        indicatorColor = ScoutBrownPrimary
+                    ),
+                    modifier = Modifier.testTag("nav_students")
+                )
+
+                NavigationBarItem(
+                    selected = currentNavIndex == 2,
+                    onClick = { currentNavIndex = 2 },
+                    icon = {
+                        Icon(
+                            imageVector = if (currentNavIndex == 2) Icons.AutoMirrored.Filled.MenuBook else Icons.AutoMirrored.Outlined.MenuBook,
                             contentDescription = "Kamus & Toolkit"
                         )
                     },
-                    label = { Text("Kamus Pramuka", fontSize = 11.sp) },
+                    label = { Text("Kamus", fontSize = 11.sp) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Color.White,
                         selectedTextColor = ScoutBrownPrimary,
@@ -131,15 +151,15 @@ fun MainScoutScreen(
                 )
 
                 NavigationBarItem(
-                    selected = currentNavIndex == 2,
-                    onClick = { currentNavIndex = 2 },
+                    selected = currentNavIndex == 3,
+                    onClick = { currentNavIndex = 3 },
                     icon = {
                         Icon(
-                            imageVector = if (currentNavIndex == 2) Icons.Filled.Info else Icons.Outlined.Info,
+                            imageVector = if (currentNavIndex == 3) Icons.Filled.Info else Icons.Outlined.Info,
                             contentDescription = "Pedoman Pembina"
                         )
                     },
-                    label = { Text("Pedoman Pembina", fontSize = 11.sp) },
+                    label = { Text("Panduan", fontSize = 11.sp) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Color.White,
                         selectedTextColor = ScoutBrownPrimary,
@@ -170,7 +190,8 @@ fun MainScoutScreen(
                                 selectedLevel = selectedLevel,
                                 levelStats = levelStats,
                                 overallStats = overallStats,
-                                onEditProfileClick = { showProfileDialog = true }
+                                onEditProfileClick = { showProfileDialog = true },
+                                onManageStudentsClick = { currentNavIndex = 1 }
                             )
                         }
 
@@ -227,11 +248,19 @@ fun MainScoutScreen(
                 }
 
                 1 -> {
+                    // Database Siswa & Kelas (SD Negri Margawangi)
+                    DataSiswaScreen(
+                        viewModel = viewModel,
+                        onStudentSelectedForTesting = { currentNavIndex = 0 }
+                    )
+                }
+
+                2 -> {
                     // Kamus & Toolkit Pramuka (Morse, Semaphore, Simpul, dll)
                     KamusPramukaScreen()
                 }
 
-                2 -> {
+                3 -> {
                     // Pedoman Pembina & Filosofi Kepramukaan SD Margawangi
                     PedomanPembinaScreen(profile = profile)
                 }

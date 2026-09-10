@@ -8,6 +8,7 @@ import com.example.data.model.ScoutProfileEntity
 import com.example.data.model.SkuArea
 import com.example.data.model.SkuItemEntity
 import com.example.data.model.SkuLevel
+import com.example.data.model.StudentEntity
 import com.example.data.repository.SkuRepository
 import com.example.data.source.InitialSkuData
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,6 +59,37 @@ class SkuViewModel(
     val selectedItemForDetail = MutableStateFlow<SkuItemEntity?>(null)
     // Active item for marking completion / examiner test input
     val selectedItemForTesting = MutableStateFlow<SkuItemEntity?>(null)
+
+    // --- Student Database (Nama Siswa & Kelas) State ---
+    val allStudents: StateFlow<List<StudentEntity>> = repository.getAllStudents()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val activeStudent: StateFlow<StudentEntity?> = repository.getActiveStudent()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+
+    val studentSearchQuery = MutableStateFlow("")
+    val selectedStudentClassFilter = MutableStateFlow("Semua") // "Semua", "Kelas 1", "Kelas 2", "Kelas 3", "Kelas 4", "Kelas 5", "Kelas 6"
+    val showAddStudentDialog = MutableStateFlow(false)
+    val studentToEdit = MutableStateFlow<StudentEntity?>(null)
+
+    val filteredStudents: StateFlow<List<StudentEntity>> = combine(
+        allStudents,
+        studentSearchQuery,
+        selectedStudentClassFilter
+    ) { students, query, classFilter ->
+        val trimmed = query.trim()
+        students.filter { student ->
+            val matchesClass = if (classFilter == "Semua") true else {
+                student.kelas.contains(classFilter, ignoreCase = true)
+            }
+            val matchesQuery = trimmed.isEmpty() ||
+                    student.nama.contains(trimmed, ignoreCase = true) ||
+                    student.kelas.contains(trimmed, ignoreCase = true) ||
+                    student.nisn.contains(trimmed, ignoreCase = true) ||
+                    student.reguBarung.contains(trimmed, ignoreCase = true)
+            matchesClass && matchesQuery
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val profile: StateFlow<ScoutProfileEntity> = repository.getProfile()
         .combine(MutableStateFlow(InitialSkuData.defaultProfile)) { loaded, default ->
@@ -250,6 +282,118 @@ class SkuViewModel(
                 pembinaName = pembina
             )
             repository.updateProfile(updated)
+        }
+    }
+
+    // --- Student Database Operations ---
+
+    fun setStudentSearchQuery(query: String) {
+        studentSearchQuery.value = query
+    }
+
+    fun setStudentClassFilter(filter: String) {
+        selectedStudentClassFilter.value = filter
+    }
+
+    fun openAddStudentDialog() {
+        studentToEdit.value = null
+        showAddStudentDialog.value = true
+    }
+
+    fun closeAddStudentDialog() {
+        showAddStudentDialog.value = false
+        studentToEdit.value = null
+    }
+
+    fun openEditStudentDialog(student: StudentEntity) {
+        studentToEdit.value = student
+        showAddStudentDialog.value = true
+    }
+
+    fun saveStudent(
+        id: Int,
+        nama: String,
+        kelas: String,
+        nisn: String,
+        reguBarung: String,
+        jenisKelamin: String,
+        catatan: String,
+        makeActive: Boolean
+    ) {
+        viewModelScope.launch {
+            val tingkatSku = when {
+                kelas.contains("1") -> "Siaga Mula"
+                kelas.contains("2") -> "Siaga Bantu"
+                kelas.contains("3") -> "Siaga Tata"
+                kelas.contains("4") -> "Penggalang Ramu"
+                kelas.contains("5") -> "Penggalang Rakit"
+                kelas.contains("6") -> "Penggalang Terap"
+                else -> "Penggalang Ramu"
+            }
+
+            if (id == 0) {
+                val newStudent = StudentEntity(
+                    nama = nama.trim(),
+                    kelas = kelas.trim(),
+                    nisn = nisn.trim(),
+                    reguBarung = reguBarung.trim(),
+                    jenisKelamin = jenisKelamin,
+                    tingkatSku = tingkatSku,
+                    isActive = makeActive,
+                    catatan = catatan.trim()
+                )
+                val newId = repository.insertStudent(newStudent)
+                if (makeActive) {
+                    val inserted = newStudent.copy(id = newId.toInt())
+                    selectActiveStudent(inserted)
+                }
+            } else {
+                val existing = allStudents.value.find { it.id == id }
+                val updatedStudent = StudentEntity(
+                    id = id,
+                    nama = nama.trim(),
+                    kelas = kelas.trim(),
+                    nisn = nisn.trim(),
+                    reguBarung = reguBarung.trim(),
+                    jenisKelamin = jenisKelamin,
+                    tingkatSku = tingkatSku,
+                    isActive = makeActive || (existing?.isActive == true),
+                    catatan = catatan.trim()
+                )
+                repository.updateStudent(updatedStudent)
+                if (makeActive) {
+                    selectActiveStudent(updatedStudent)
+                }
+            }
+            closeAddStudentDialog()
+        }
+    }
+
+    fun deleteStudent(student: StudentEntity) {
+        viewModelScope.launch {
+            repository.deleteStudent(student)
+            if (student.isActive) {
+                val remaining = allStudents.value.filter { it.id != student.id }
+                if (remaining.isNotEmpty()) {
+                    selectActiveStudent(remaining.first())
+                }
+            }
+        }
+    }
+
+    fun selectActiveStudent(student: StudentEntity) {
+        viewModelScope.launch {
+            repository.selectActiveStudent(student)
+            val matchingLevel = when {
+                student.kelas.contains("1") -> SkuLevel.SIAGA_MULA
+                student.kelas.contains("2") -> SkuLevel.SIAGA_BANTU
+                student.kelas.contains("3") -> SkuLevel.SIAGA_TATA
+                student.kelas.contains("4") -> SkuLevel.RAMU
+                student.kelas.contains("5") -> SkuLevel.RAKIT
+                student.kelas.contains("6") -> SkuLevel.TERAP
+                else -> SkuLevel.RAMU
+            }
+            selectedLevel.value = matchingLevel
         }
     }
 }

@@ -4,18 +4,101 @@ import com.example.data.model.ScoutProfileEntity
 import com.example.data.model.SkuArea
 import com.example.data.model.SkuItemEntity
 import com.example.data.model.SkuLevel
+import com.example.data.model.StudentEntity
 
 object InitialSkuData {
 
     val defaultProfile = ScoutProfileEntity(
         id = 1,
-        fullName = "Siswa Pramuka Margawangi",
+        fullName = "Ahmad Fauzi",
         gradeClass = "Kelas 4 SD",
         reguName = "Regu Rajawali (Putra 06005)",
         pangkalan = "SD NEGRI MARGAWANGI",
         gudep = "GUDEP 06005 DAN 06006",
         pembinaName = "Kak Pembina SD Negri Margawangi"
     )
+
+    fun getInitialStudents(): List<StudentEntity> {
+        return listOf(
+            StudentEntity(
+                id = 1,
+                nama = "Ahmad Fauzi",
+                kelas = "Kelas 4",
+                nisn = "0112345671",
+                reguBarung = "Regu Rajawali",
+                jenisKelamin = "Laki-laki",
+                tingkatSku = "Penggalang Ramu",
+                isActive = true,
+                catatan = "Pemimpin Regu (Pinru) Rajawali Putra"
+            ),
+            StudentEntity(
+                id = 2,
+                nama = "Siti Nurhaliza",
+                kelas = "Kelas 4",
+                nisn = "0112345672",
+                reguBarung = "Regu Melati",
+                jenisKelamin = "Perempuan",
+                tingkatSku = "Penggalang Ramu",
+                isActive = false,
+                catatan = "Pinru Melati Putri"
+            ),
+            StudentEntity(
+                id = 3,
+                nama = "Budi Santoso",
+                kelas = "Kelas 1",
+                nisn = "0142345673",
+                reguBarung = "Barung Merah",
+                jenisKelamin = "Laki-laki",
+                tingkatSku = "Siaga Mula",
+                isActive = false,
+                catatan = "Pramuka Siaga Mula aktif"
+            ),
+            StudentEntity(
+                id = 4,
+                nama = "Annisa Rahmawati",
+                kelas = "Kelas 2",
+                nisn = "0132345674",
+                reguBarung = "Barung Kuning",
+                jenisKelamin = "Perempuan",
+                tingkatSku = "Siaga Bantu",
+                isActive = false,
+                catatan = "Pramuka Siaga Bantu"
+            ),
+            StudentEntity(
+                id = 5,
+                nama = "Dika Pratama",
+                kelas = "Kelas 3",
+                nisn = "0122345675",
+                reguBarung = "Barung Hijau",
+                jenisKelamin = "Laki-laki",
+                tingkatSku = "Siaga Tata",
+                isActive = false,
+                catatan = "Pramuka Siaga Tata"
+            ),
+            StudentEntity(
+                id = 6,
+                nama = "Rizky Ramadhan",
+                kelas = "Kelas 5",
+                nisn = "0102345676",
+                reguBarung = "Regu Garuda",
+                jenisKelamin = "Laki-laki",
+                tingkatSku = "Penggalang Rakit",
+                isActive = false,
+                catatan = "Penggalang Rakit Kelas 5"
+            ),
+            StudentEntity(
+                id = 7,
+                nama = "Zahra Aulia",
+                kelas = "Kelas 6",
+                nisn = "0092345677",
+                reguBarung = "Regu Mawar",
+                jenisKelamin = "Perempuan",
+                tingkatSku = "Penggalang Terap",
+                isActive = false,
+                catatan = "Pratama Putri Penggalang Terap"
+            )
+        )
+    }
 
     fun getInitialSkuItems(): List<SkuItemEntity> {
         val items = mutableListOf<SkuItemEntity>()

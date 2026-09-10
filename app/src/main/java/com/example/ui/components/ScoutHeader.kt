@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -53,6 +54,7 @@ fun ScoutHeader(
     levelStats: Pair<Int, Int>,
     overallStats: Pair<Int, Int>,
     onEditProfileClick: () -> Unit,
+    onManageStudentsClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -211,18 +213,34 @@ fun ScoutHeader(
                         }
                     }
 
-                    IconButton(
-                        onClick = onEditProfileClick,
-                        modifier = Modifier
-                            .testTag("edit_profile_button")
-                            .size(36.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = "Ubah Profil Pramuka",
-                            tint = ScoutBrownPrimary,
-                            modifier = Modifier.size(18.dp)
-                        )
+                    Row {
+                        IconButton(
+                            onClick = onManageStudentsClick,
+                            modifier = Modifier
+                                .testTag("manage_students_button")
+                                .size(36.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Groups,
+                                contentDescription = "Database Siswa",
+                                tint = ScoutBrownPrimary,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+
+                        IconButton(
+                            onClick = onEditProfileClick,
+                            modifier = Modifier
+                                .testTag("edit_profile_button")
+                                .size(36.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = "Ubah Profil Pramuka",
+                                tint = ScoutBrownPrimary,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
                     }
                 }
 
