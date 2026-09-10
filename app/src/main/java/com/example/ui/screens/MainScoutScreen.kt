@@ -90,7 +90,6 @@ fun MainScoutScreen(
             NavigationBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .windowInsetsPadding(WindowInsets.navigationBars)
                     .testTag("main_bottom_nav"),
                 containerColor = MaterialTheme.colorScheme.surface,
                 tonalElevation = 6.dp
