@@ -199,7 +199,7 @@ class SkuViewModel(
         viewModelScope.launch {
             val newStatus = !item.isCompleted
             val today = if (newStatus) {
-                SimpleDateFormat("dd MMM yyyy", Locale("id", "ID")).format(Date())
+                SimpleDateFormat("dd MMM yyyy", Locale.forLanguageTag("id-ID")).format(Date())
             } else ""
             val defaultExaminer = if (newStatus) (profile.value.pembinaName.ifBlank { "Kak Pembina" }) else ""
             repository.updateCompletionStatus(

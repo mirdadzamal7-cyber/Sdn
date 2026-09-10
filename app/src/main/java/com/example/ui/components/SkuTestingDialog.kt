@@ -57,7 +57,7 @@ fun SkuTestingDialog(
     modifier: Modifier = Modifier
 ) {
     val currentDateStr = remember {
-        SimpleDateFormat("dd MMM yyyy", Locale("id", "ID")).format(Date())
+        SimpleDateFormat("dd MMM yyyy", Locale.forLanguageTag("id-ID")).format(Date())
     }
 
     var isCompleted by remember { mutableStateOf(item.isCompleted) }

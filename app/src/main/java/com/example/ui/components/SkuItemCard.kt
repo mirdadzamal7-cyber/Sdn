@@ -17,11 +17,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.AssignmentTurnedIn
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.EditNote
-import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.outlined.CheckCircleOutline
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -244,7 +244,7 @@ fun SkuItemCard(
                     modifier = Modifier.testTag("detail_button_${item.id}")
                 ) {
                     Icon(
-                        imageVector = Icons.Default.MenuBook,
+                        imageVector = Icons.AutoMirrored.Filled.MenuBook,
                         contentDescription = null,
                         tint = ScoutBrownPrimary,
                         modifier = Modifier.size(16.dp)

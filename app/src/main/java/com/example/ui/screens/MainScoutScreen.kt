@@ -19,13 +19,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FormatListBulleted
+import androidx.compose.material.icons.automirrored.filled.FormatListBulleted
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.automirrored.outlined.FormatListBulleted
+import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.SearchOff
-import androidx.compose.material.icons.outlined.FormatListBulleted
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.MenuBook
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -99,7 +99,7 @@ fun MainScoutScreen(
                     onClick = { currentNavIndex = 0 },
                     icon = {
                         Icon(
-                            imageVector = if (currentNavIndex == 0) Icons.Filled.FormatListBulleted else Icons.Outlined.FormatListBulleted,
+                            imageVector = if (currentNavIndex == 0) Icons.AutoMirrored.Filled.FormatListBulleted else Icons.AutoMirrored.Outlined.FormatListBulleted,
                             contentDescription = "Daftar SKU"
                         )
                     },
@@ -117,7 +117,7 @@ fun MainScoutScreen(
                     onClick = { currentNavIndex = 1 },
                     icon = {
                         Icon(
-                            imageVector = if (currentNavIndex == 1) Icons.Filled.MenuBook else Icons.Outlined.MenuBook,
+                            imageVector = if (currentNavIndex == 1) Icons.AutoMirrored.Filled.MenuBook else Icons.AutoMirrored.Outlined.MenuBook,
                             contentDescription = "Kamus & Toolkit"
                         )
                     },
