@@ -1,0 +1,6 @@
+{
+  "name": "SKU Pramuka SD",
+  "description": "Buku panduan digital dan pelacak kemajuan SKU Pramuka SD Kelas 1 s/d 6 (Siaga Mula, Bantu, Tata & Penggalang Ramu, Rakit, Terap) Pangkalan SD Negeri Margawangi Gudep 06005 & 06006.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
